@@ -1,5 +1,6 @@
 <?php
 
+use App\AssessmentIncludes\AssessmentInterface;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -126,6 +127,12 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        'assessmentLog' => [
+            'driver' => 'daily',
+            'path' => storage_path(AssessmentInterface::ASSESSMENT_LOG_PATH),
+            'level' => 'debug',
+        ]
     ],
 
 ];
