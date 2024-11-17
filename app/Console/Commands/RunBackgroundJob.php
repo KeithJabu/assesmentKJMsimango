@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\AssessmentIncludes\AssessmentInterface;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
@@ -47,7 +48,7 @@ class RunBackgroundJob extends Command
 
         // Validate class_name and method log if not fond
         if ( ! $this->isValidJob($class_name, $method)) {
-            Log::channel('assessmentLog')->error(
+            Log::channel('assessmentLogErrors')->error(
                 "Invalid job execution: {$class_name}::{$method}",
                 [
                     'request' => ['class_name' => $class_name, '$method' => $method],
@@ -60,10 +61,12 @@ class RunBackgroundJob extends Command
         }
 
         try {
-            $this->runJobInBackground($class_name, $method, $params);
-            $this->info("Job execution successfully.");
+            runBackgroundJob($class_name, $method, $params);
+
+            Log::channel('assessmentLog')->info("Run Background Job execution successfully.");
+
         } catch (\Exception $e) {
-            Log::channel('assessmentLog')->error(
+            Log::channel('assessmentLogErrors')->error(
                 "Job execution failed: {$e->getMessage()}",
                 [
                     'request' => ['class_name' => $class_name, '$method' => $method, 'params' => $params],
@@ -85,12 +88,7 @@ class RunBackgroundJob extends Command
      */
     private function isValidJob($class_name, $method): bool
     {
-        //TODO: Add more allowed classes in the allowed classes array
-        $allowed_classes = [
-            'App\\Jobs\\ExampleRunBackgroundJob',
-        ];
-
-        return in_array($class_name, $allowed_classes, TRUE) && method_exists($class_name, $method);
+        return in_array($class_name, AssessmentInterface::ALLOWED_CLASSES, TRUE) && method_exists($class_name, $method);
     }
 
     /**
