@@ -1,0 +1,51 @@
+
+Warning: PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+
+Warning: PHP Startup: Invalid library (appears to be a Zend Extension, try loading using zend_extension=opcache from php.ini) in Unknown on line 0
+
+Warning: PHP Startup: Unable to load dynamic library 'odbc' (tried: /usr/lib/php/20210902/odbc (/usr/lib/php/20210902/odbc: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/odbc.so (/usr/lib/php/20210902/odbc.so: cannot open shared object file: No such file or directory)) in Unknown on line 0
+
+Warning: PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: mysqlnd_get_client_info)) in Unknown on line 0
+
+Warning: PHP Startup: Unable to load dynamic library 'pdo_odbc' (tried: /usr/lib/php/20210902/pdo_odbc (/usr/lib/php/20210902/pdo_odbc: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_odbc.so (/usr/lib/php/20210902/pdo_odbc.so: cannot open shared object file: No such file or directory)) in Unknown on line 0
+
+Warning: PHP Startup: Unable to load dynamic library 'pdo_sqlite' (tried: /usr/lib/php/20210902/pdo_sqlite (/usr/lib/php/20210902/pdo_sqlite: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_sqlite.so (/usr/lib/php/20210902/pdo_sqlite.so: cannot open shared object file: No such file or directory)) in Unknown on line 0
+
+Warning: PHP Startup: Unable to load dynamic library 'xsl' (tried: /usr/lib/php/20210902/xsl (/usr/lib/php/20210902/xsl: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/xsl.so (/usr/lib/php/20210902/xsl.so: undefined symbol: dom_node_class_entry)) in Unknown on line 0
+
+Warning: Module "PDO" is already loaded in Unknown on line 0
+
+Warning: Module "curl" is already loaded in Unknown on line 0
+
+Warning: Module "exif" is already loaded in Unknown on line 0
+
+Warning: Module "FFI" is already loaded in Unknown on line 0
+
+Warning: Module "fileinfo" is already loaded in Unknown on line 0
+
+Warning: Module "ftp" is already loaded in Unknown on line 0
+
+Warning: Module "gd" is already loaded in Unknown on line 0
+
+Warning: Module "gettext" is already loaded in Unknown on line 0
+
+Warning: Module "imap" is already loaded in Unknown on line 0
+
+Warning: Module "intl" is already loaded in Unknown on line 0
+
+Warning: Module "mbstring" is already loaded in Unknown on line 0
+
+Warning: Module "shmop" is already loaded in Unknown on line 0
+
+Warning: Module "soap" is already loaded in Unknown on line 0
+
+Warning: Module "sockets" is already loaded in Unknown on line 0
+
+Warning: PHP Startup: Unable to load dynamic library 'sqlsrv.so' (tried: /usr/lib/php/20210902/sqlsrv.so (/usr/lib/php/20210902/sqlsrv.so: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/sqlsrv.so.so (/usr/lib/php/20210902/sqlsrv.so.so: cannot open shared object file: No such file or directory)) in Unknown on line 0
+
+Warning: PHP Startup: Unable to load dynamic library 'pdo_sqlsrv.so' (tried: /usr/lib/php/20210902/pdo_sqlsrv.so (/usr/lib/php/20210902/pdo_sqlsrv.so: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_sqlsrv.so.so (/usr/lib/php/20210902/pdo_sqlsrv.so.so: cannot open shared object file: No such file or directory)) in Unknown on line 0
+
+Fatal error: Uncaught Error: Interface "App\AssessmentIncludes\AssessmentInterface" not found in /var/www/assessmentJobRunner/app/Jobs/ExecuteBackgroundJob.php:9
+Stack trace:
+#0 {main}
+  thrown in /var/www/assessmentJobRunner/app/Jobs/ExecuteBackgroundJob.php on line 9
