@@ -1,16 +1,16 @@
 <?php
 
-if (! function_exists('runBackgroundJob')) {
+if ( ! function_exists('runBackgroundJob')) {
     /**
      * Prepare the command for the background execution, and execute the command in the background
      *
-     * @param $class
-     * @param $method
-     * @param $params
+     * @param string $class
+     * @param string $method
+     * @param array $params
      *
      * @return void
      */
-    function runBackgroundJob($class, $method, $params): void
+    function runBackgroundJob(string $class, string $method, array $params = []): void
     {
         // Prepare the command for the background execution
         $params_to_json = escapeshellarg(json_encode($params));

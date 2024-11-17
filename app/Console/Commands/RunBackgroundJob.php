@@ -3,11 +3,12 @@
 namespace App\Console\Commands;
 
 use App\AssessmentIncludes\AssessmentInterface;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 
-class RunBackgroundJob extends Command
+class RunBackgroundJob extends Command implements AssessmentInterface
 {
     /**
      * Running a background job that can take in a class name, method name and with parameters as objects.
@@ -38,23 +39,15 @@ class RunBackgroundJob extends Command
      */
     public function handle()
     {
-        //if ($this->argument('class') !== NULL)
-            $class_name = $this->argument('class');
-
-        //if ($this->argument('class') !== NULL)
-            $method = $this->argument('method');
-
-        $params = $this->argument('params') ? json_decode($this->argument('params'), true) : [];
+        $class_name = $this->argument('class_name');
+        $method     = $this->argument('method');
+        $params     = $this->argument('params') ? json_decode($this->argument('params'), true) : [];
 
         // Validate class_name and method log if not fond
         if ( ! $this->isValidJob($class_name, $method)) {
-            Log::channel('assessmentLogErrors')->error(
-                "Invalid job execution: {$class_name}::{$method}",
-                [
-                    'request' => ['class_name' => $class_name, '$method' => $method],
-                    'message' => 'Invalid job class or method.',
-                    'file' => static::class
-                ]
+            $this->logStatus(
+                "Invalid job class or method. Invalid job execution: {$class_name}::{$method}, ",
+                $class_name, $class_name, static::FAILED
             );
 
             return;
@@ -62,19 +55,9 @@ class RunBackgroundJob extends Command
 
         try {
             runBackgroundJob($class_name, $method, $params);
-
-            Log::channel('assessmentLog')->info("Run Background Job execution successfully.");
-
+            $this->logStatus('Run Background Job execution successfully.', $class_name, $class_name, static::COMPLETED);
         } catch (\Exception $e) {
-            Log::channel('assessmentLogErrors')->error(
-                "Job execution failed: {$e->getMessage()}",
-                [
-                    'request' => ['class_name' => $class_name, '$method' => $method, 'params' => $params],
-                    'Exception' => $e,
-                    'file' => static::class
-                ]
-            );
-            $this->error("Job execution failed.");
+            $this->logStatus("Job execution failed: {$e->getMessage()}", $class_name, $class_name, static::FAILED);
         }
     }
 
@@ -92,6 +75,7 @@ class RunBackgroundJob extends Command
     }
 
     /**
+     * TODO:: might not be used
      * Prepare the command for the background execution, and execute the command in the background
      *
      * @param string $class_name
@@ -106,8 +90,37 @@ class RunBackgroundJob extends Command
 
         Artisan::call('job:run_background_job', [
             'class_name' => $class_name,
-            'method' => $method,
-            'params' => $params_to_json
+            'method'     => $method,
+            'params'     => $params_to_json
         ]);
+    }
+
+    /**
+     * @param string $message
+     * @param string $class_name
+     * @param string $method
+     * @param string $status
+     *
+     * @return void
+     */
+    public function logStatus(string $message, string $class_name, string $method, string $status): void
+    {
+        $logMessage = [
+            'timestamp' => Carbon::now()->format('Y-m-d HH:i:s'),
+            'class'     => $class_name,
+            'method'    => $method,
+            'status'    => $status,
+            'message'   => $message,
+            'file'      => static::class,
+        ];
+
+        switch ($status) {
+            case static::FAILED:
+                Log::channel('assessmentLogErrors')->error($message, $logMessage);
+                break;
+            default:
+                Log::channel('assessmentLog')->error($message, $logMessage);
+                break;
+        }
     }
 }

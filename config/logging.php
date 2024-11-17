@@ -131,13 +131,13 @@ return [
         'assessmentLog' => [
             'driver' => 'daily',
             'path' => storage_path(AssessmentInterface::ASSESSMENT_LOG_PATH),
-            'level' => 'debug',
+            'level' => 'info',
         ],
 
         'assessmentLogErrors' => [
             'driver' => 'daily',
             'path' => storage_path(AssessmentInterface::ASSESSMENT_ERROR_LOG_PATH),
-            'level' => 'debug',
+            'level' => 'error',
         ]
     ],
 
