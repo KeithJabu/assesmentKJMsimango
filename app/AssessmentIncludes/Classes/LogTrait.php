@@ -1,7 +1,6 @@
 <?php
-namespace App\AssessmentIncludes;
+namespace App\AssessmentIncludes\Classes;
 
-use App\Jobs\CountHundredJob;
 use Carbon\Carbon;
 
 trait LogTrait
@@ -13,6 +12,7 @@ trait LogTrait
      * @param string $class_name
      * @param string $method
      * @param string $status
+     * @param string $from_file
      *
      * @return void
      */

@@ -2,14 +2,9 @@
 
 namespace App\Jobs;
 
-use App\AssessmentIncludes\AssessmentInterface;
-use App\AssessmentIncludes\LogTrait;
+use App\AssessmentIncludes\Classes\AssessmentInterface;
+use App\AssessmentIncludes\Classes\LogTrait;
 use Carbon\Carbon;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 

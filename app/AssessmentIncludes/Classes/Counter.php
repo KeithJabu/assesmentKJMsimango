@@ -1,7 +1,8 @@
 <?php
 
-namespace App\AssessmentIncludes;
+namespace App\AssessmentIncludes\Classes;
 
+use App\Models\BGJobs;
 use Illuminate\Support\Collection;
 
 class Counter
@@ -10,6 +11,7 @@ class Counter
 
     protected int $count;
     protected Collection $number_count;
+    protected BGJobs $jobs;
 
     public function __construct() {
         $this->count = 0;

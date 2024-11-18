@@ -1,7 +1,5 @@
 <?php
-namespace App\AssessmentIncludes;
-
-use App\Jobs\CountHundredJob;
+namespace App\AssessmentIncludes\Classes;
 
 interface AssessmentInterface
 {
@@ -16,5 +14,9 @@ interface AssessmentInterface
     //TODO: Add more allowed classes in the allowed classes array
     public const ALLOWED_CLASSES = [
         'counter' => Counter::class,
+    ];
+
+    public const ASSESSMENT_STATUS = [
+        self::RUNNING, self::FAILED, self::COMPLETED
     ];
 }

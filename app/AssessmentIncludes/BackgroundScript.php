@@ -15,6 +15,7 @@
     $bg_job_runner = new \App\Jobs\ExecuteBackgroundJob();
     try {
         $bg_job_runner->run($class_name, $method, $params);
+        echo "\n Processes!";
     } catch (Exception $e) {
         echo "\n Job failed: " . $e->getMessage() . "\n";
     }

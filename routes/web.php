@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AssessmentController\BGJobsController;
+use App\Http\Controllers\AssessmentController\BGJobsSearchController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +18,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/dashboard', [BGJobsController::class, 'index'])->name('home');
+Route::get('search-datatables/{status}', [BGJobsSearchController::class, 'searchDataTable'])->name('search.datatable');

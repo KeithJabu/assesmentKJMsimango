@@ -2,13 +2,11 @@
 
 namespace App\Jobs;
 
-use App\AssessmentIncludes\AssessmentInterface;
-use App\AssessmentIncludes\LogTrait;
-use Carbon\Carbon;
+use App\AssessmentIncludes\Classes\AssessmentInterface;
+use App\AssessmentIncludes\Classes\LogTrait;
+use App\Models\BGJobs;
 use Exception;
 use Illuminate\Support\Facades\Facade;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 
 class ExecuteBackgroundJob extends Facade implements AssessmentInterface
 {
@@ -33,7 +31,8 @@ class ExecuteBackgroundJob extends Facade implements AssessmentInterface
     {
         if ( ! array_key_exists($class_name, self::ALLOWED_CLASSES)) {
             $this->logStatus("Class name is Not allowed: $class_name",
-                $class_name, $method, static::FAILED, static::class);
+                $class_name, $method, static::FAILED, static::class
+            );
 
             echo "\n You can only use these sets of class names:";
             foreach (self::ALLOWED_CLASSES as $objects => $classes) {
@@ -45,26 +44,48 @@ class ExecuteBackgroundJob extends Facade implements AssessmentInterface
 
         $class = app(self::getClassName($class_name));
         if ( ! method_exists($class, $method)) {
-            $this->logStatus("No Method $method exist in $class_name",
-                $class_name, $method, static::FAILED, static::class);
+            $this->logStatus(
+                "No Method $method exist in $class_name",
+                $class_name, $method, static::FAILED, static::class
+            );
 
             throw new Exception("No Method $method exist in $class_name");
         }
 
+        /** @var BGJobs $jobs */
+        $jobs = BGJobs::create([
+            'class' => self::getClassName($class_name),
+            'method' => $method,
+            'parameters' => json_encode($params),
+            'status' => AssessmentInterface::RUNNING,
+        ]);
+
         try {
-            $this->logStatus("$class_name::$method: Job executing start",
-                $class_name, $method, static::RUNNING, static::class);
+
+            $this->logStatus(
+                "$class_name::$method: Job executing start",
+                $class_name, $method, static::RUNNING, static::class
+            );
 
             $instance = new $class;
             $response = call_user_func_array([$instance, $method], $params);
 
             $this->logStatus("$class_name::$method: Job executed successfully",
-                $class_name, $method, static::COMPLETED, static::class);
+                $class_name, $method, static::COMPLETED, static::class
+            );
+
+            $jobs->status = AssessmentInterface::COMPLETED;
+            $jobs->save();
 
             return $response;
         } catch (Exception $exception) {
             $this->logStatus("Job execution failure " . $exception->getMessage(),
-                $class_name, $method, static::FAILED, static::class);
+                $class_name, $method, static::FAILED, static::class
+            );
+
+            $jobs->status = AssessmentInterface::FAILED;
+            $jobs->save();
+
             throw $exception;
         }
     }
