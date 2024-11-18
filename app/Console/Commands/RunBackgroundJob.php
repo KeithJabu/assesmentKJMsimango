@@ -3,13 +3,18 @@
 namespace App\Console\Commands;
 
 use App\AssessmentIncludes\AssessmentInterface;
+use App\AssessmentIncludes\LogTrait;
+use App\Jobs\ExecuteBackgroundJob;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 
 class RunBackgroundJob extends Command implements AssessmentInterface
 {
+    use LogTrait;
+
     /**
      * Running a background job that can take in a class name, method name and with parameters as objects.
      * TO run the function we need a class name and an or a method
@@ -17,7 +22,7 @@ class RunBackgroundJob extends Command implements AssessmentInterface
      *
      * @var string
      */
-    protected $signature = 'job:run_background_job {class_name} {method} {params?}';
+    protected $signature = 'job:run_background_job {class_name} {method} {params?} {retryAttempts=3} {delayInSeconds=0} {priority=0}';
 
     /**
      * The console command description.
@@ -39,9 +44,38 @@ class RunBackgroundJob extends Command implements AssessmentInterface
      */
     public function handle()
     {
-        $class_name = $this->argument('class_name');
+        $class_name = app($this->getClassName($this->argument('class_name')));
         $method     = $this->argument('method');
         $params     = $this->argument('params') ? json_decode($this->argument('params'), true) : [];
+        $retry_attempts = (int)$this->argument('retry_attempts');
+        $delay_in_seconds = (int)$this->argument('delay_in_seconds');
+
+        try {
+            if ($delay_in_seconds > 0) {
+                sleep($delay_in_seconds);
+            }
+
+            for ($attempt = 0; $attempt < $retry_attempts; $attempt++) {
+                try {
+                    ExecuteBackgroundJob::execute($class_name, $method, $params);
+                    $this->logStatus("Job executed successfully on attempt $attempt.", $class_name, $method, AssessmentInterface::COMPLETED);
+
+                    break;
+                } catch (Exception $e) {
+                    $this->logStatus("Retry $attempt for job $class_name@$method failed: " . $e->getMessage(),
+                        $class_name, $method, AssessmentInterface::COMPLETED);
+                    if ($attempt + 1 === $retry_attempts) {
+                        throw $e;
+                    }
+                }
+            }
+        } catch (Exception $e) {
+            $this->logStatus("Job failed: " . $e->getMessage(),
+                $class_name, $method, AssessmentInterface::COMPLETED);
+        }
+
+
+
 
         // Validate class_name and method log if not fond
         if ( ! $this->isValidJob($class_name, $method)) {
@@ -56,7 +90,7 @@ class RunBackgroundJob extends Command implements AssessmentInterface
         try {
             runBackgroundJob($class_name, $method, $params);
             $this->logStatus('Run Background Job execution successfully.', $class_name, $class_name, static::COMPLETED);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logStatus("Job execution failed: {$e->getMessage()}", $class_name, $class_name, static::FAILED);
         }
     }

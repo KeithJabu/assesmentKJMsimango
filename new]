@@ -44,8 +44,4 @@ Warning: Module "sockets" is already loaded in Unknown on line 0
 Warning: PHP Startup: Unable to load dynamic library 'sqlsrv.so' (tried: /usr/lib/php/20210902/sqlsrv.so (/usr/lib/php/20210902/sqlsrv.so: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/sqlsrv.so.so (/usr/lib/php/20210902/sqlsrv.so.so: cannot open shared object file: No such file or directory)) in Unknown on line 0
 
 Warning: PHP Startup: Unable to load dynamic library 'pdo_sqlsrv.so' (tried: /usr/lib/php/20210902/pdo_sqlsrv.so (/usr/lib/php/20210902/pdo_sqlsrv.so: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_sqlsrv.so.so (/usr/lib/php/20210902/pdo_sqlsrv.so.so: cannot open shared object file: No such file or directory)) in Unknown on line 0
-
-Fatal error: Uncaught Error: Interface "App\AssessmentIncludes\AssessmentInterface" not found in /var/www/assessmentJobRunner/app/Jobs/ExecuteBackgroundJob.php:9
-Stack trace:
-#0 {main}
-  thrown in /var/www/assessmentJobRunner/app/Jobs/ExecuteBackgroundJob.php on line 9
+Could not open input file: BackgroundScript.php

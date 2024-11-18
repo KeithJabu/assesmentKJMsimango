@@ -1,5 +1,9 @@
 <?php
 
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+
+
 if ( ! function_exists('runBackgroundJob')) {
     /**
      * Prepare the command for the background execution, and execute the command in the background
@@ -14,6 +18,7 @@ if ( ! function_exists('runBackgroundJob')) {
     {
         // Prepare the command for the background execution
         $params_to_json = escapeshellarg(json_encode($params));
+        $script_path = base_path(\App\AssessmentIncludes\AssessmentInterface::ASSESSMENT_SCRIPT);
 
         $command = PHP_BINARY . " -f " . base_path('artisan') . " job:execute {$class} {$method} {$params_to_json} > /dev/null 2>&1 &";
 

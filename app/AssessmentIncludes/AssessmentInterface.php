@@ -1,18 +1,21 @@
 <?php
 namespace App\AssessmentIncludes;
 
+use App\Jobs\CountHundredJob;
+
 interface AssessmentInterface
 {
-    public const ASSESSMENT_ERROR_LOG_PATH = '/logs/background_jobs_errors.log';
-    public const ASSESSMENT_LOG_PATH       = '/logs/background_jobs.log';
+    public const ASSESSMENT_LOG_PATH       = './storage/logs/';
+    public const ASSESSMENT_ERROR_LOG_FILE = 'background_jobs_errors.log';
+    public const ASSESSMENT_SCRIPT         = 'app/AssessmentIncludes/BackgroundScript.php';
+    public const ASSESSMENT_LOG_FILE       = 'background_jobs.log';
     public const COMPLETED                 = 'completed';
     public const FAILED                    = 'failed';
     public const RUNNING                   = 'running';
 
     //TODO: Add more allowed classes in the allowed classes array
     public const ALLOWED_CLASSES = [
-        'App\\Jobs\\ExampleRunBackgroundJob1',
-        'App\\Jobs\\ExampleRunBackgroundJob2',
+        'counter' => Counter::class,
     ];
 
     /**
@@ -25,5 +28,4 @@ interface AssessmentInterface
      *
      * @return void
      */
-    public function logStatus(string $message, string $class_name, string $method, string $status): void;
 }
