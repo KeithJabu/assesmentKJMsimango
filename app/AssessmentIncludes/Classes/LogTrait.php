@@ -1,10 +1,13 @@
 <?php
 namespace App\AssessmentIncludes\Classes;
 
+use App\Models\BGJobs;
 use Carbon\Carbon;
 
 trait LogTrait
 {
+    protected ?BGJobs $BG_jobs;
+
     /**
      * Process logging status
      *
@@ -28,8 +31,10 @@ trait LogTrait
         ];
 
         if ($status === AssessmentInterface::FAILED) {
+            //Log::channel('assessmentLogErrors')->error($message, $log_message);
             $this->addLogToFile(AssessmentInterface::ASSESSMENT_ERROR_LOG_FILE, $log_message);
         } else {
+            //Log::channel('assessmentLog')->info($message, $log_message);
             $this->addLogToFile(AssessmentInterface::ASSESSMENT_LOG_FILE, $log_message);
         }
     }

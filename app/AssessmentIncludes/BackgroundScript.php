@@ -1,4 +1,7 @@
 <?php
+
+namespace App\AssessmentIncludes;
+
     echo "start \n\r";
 
     require __DIR__ . '/../../vendor/autoload.php';
@@ -14,8 +17,10 @@
 
     $bg_job_runner = new \App\Jobs\ExecuteBackgroundJob();
     try {
-        $bg_job_runner->run($class_name, $method, $params);
+        $response = $bg_job_runner->run($class_name, $method, $params);
+
+        echo $response;
         echo "\n Processes!";
-    } catch (Exception $e) {
+    } catch (\Exception $e) {
         echo "\n Job failed: " . $e->getMessage() . "\n";
     }
