@@ -1,10 +1,7 @@
 <?php
-
     echo "start \n\r";
 
     require __DIR__ . '/../../vendor/autoload.php';
-
-    echo "imported \n\r";
 
     // Show error Parse inputs needed from command-line arguments
     if ($argc < 3) {
@@ -19,5 +16,5 @@
     try {
         $bg_job_runner->run($class_name, $method, $params);
     } catch (Exception $e) {
-        echo "Job failed: " . $e->getMessage() . "\n";
+        echo "\n Job failed: " . $e->getMessage() . "\n";
     }

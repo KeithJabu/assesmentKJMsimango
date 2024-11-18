@@ -17,15 +17,4 @@ interface AssessmentInterface
     public const ALLOWED_CLASSES = [
         'counter' => Counter::class,
     ];
-
-    /**
-     * Log status execution on jobs
-     *
-     * @param string $message
-     * @param string $class_name
-     * @param string $method
-     * @param string $status
-     *
-     * @return void
-     */
 }

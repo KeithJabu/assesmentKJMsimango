@@ -50,6 +50,16 @@ class RunBackgroundJob extends Command implements AssessmentInterface
         $retry_attempts = (int)$this->argument('retry_attempts');
         $delay_in_seconds = (int)$this->argument('delay_in_seconds');
 
+        // Validate class_name and method log if not fond
+        if ( ! $this->isValidJob($class_name, $method)) {
+            $this->logStatus(
+                "Invalid job class or method. Invalid job execution: {$class_name}::{$method}, ",
+                $class_name, $class_name, static::FAILED
+            );
+
+            return;
+        }
+
         try {
             if ($delay_in_seconds > 0) {
                 sleep($delay_in_seconds);
@@ -58,7 +68,8 @@ class RunBackgroundJob extends Command implements AssessmentInterface
             for ($attempt = 0; $attempt < $retry_attempts; $attempt++) {
                 try {
                     ExecuteBackgroundJob::execute($class_name, $method, $params);
-                    $this->logStatus("Job executed successfully on attempt $attempt.", $class_name, $method, AssessmentInterface::COMPLETED);
+                    $this->logStatus("Job executed successfully on attempt $attempt.",
+                        $class_name, $method, AssessmentInterface::COMPLETED, static::class);
 
                     break;
                 } catch (Exception $e) {
@@ -77,15 +88,7 @@ class RunBackgroundJob extends Command implements AssessmentInterface
 
 
 
-        // Validate class_name and method log if not fond
-        if ( ! $this->isValidJob($class_name, $method)) {
-            $this->logStatus(
-                "Invalid job class or method. Invalid job execution: {$class_name}::{$method}, ",
-                $class_name, $class_name, static::FAILED
-            );
 
-            return;
-        }
 
         try {
             runBackgroundJob($class_name, $method, $params);
