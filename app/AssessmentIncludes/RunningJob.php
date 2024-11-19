@@ -5,14 +5,14 @@ namespace App\AssessmentIncludes;
 use App\AssessmentIncludes\Classes\AssessmentInterface;
 use Exception, App\AssessmentIncludes\Classes\LogTrait;
 
-class RuningJob implements AssessmentInterface
+class RunningJob implements AssessmentInterface
 {
     use LogTrait;
 
     /**
      * @throws Exception
      */
-    public function runallJobs(bool $confirm = FALSE) {
+    public function runAllJobs(bool $confirm = FALSE) {
         if ($confirm) {
             foreach (static::ALLOWED_CLASSES as $key => $CLASS) {
                 try {

@@ -24,7 +24,18 @@ This should give you a response of success or failure in the command, whether yo
 
 if successful: running this script: will give u the exact command in `" QUOTES "` that you can execute using the `php artisan` command for future use
 
-___
+<h4> CMD Allowed class name </h4>
+<pre>
+    ALLOWED_CLASSES_NAMES = [
+        'counter',
+        'counter150', 
+        'counter350',
+        'counter450', 
+        'runAll,
+    ];
+</pre>
+_______________________________________________________________________________________
+
 <h2> Application Plugins </h2>
 <h4> PHP Plugins</h4>
 <ul>
@@ -57,14 +68,18 @@ while
 
 
 ___
-TO View Jobs history:
+<h2> Application viewing </h2>
+<h3> To View Jobs history </h3>
 
 base_url()/dashboard
 
-route-name = home
-http://assessementeyona.loc/dashboard
+route-name = 'home'
 
-![img_1.png](img_1.png)
+exmple: http://assessementKeith/dashboard
+
+![img_1.png](./img_1.png)
+
+
 
 
 
